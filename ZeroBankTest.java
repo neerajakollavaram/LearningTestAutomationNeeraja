@@ -78,8 +78,8 @@ public class ZeroBankTest {
 
 	@AfterMethod
 	public void logOut() {
-		driver.findElement(By.className("dropdown-toggle")).click();
-		driver.findElement(By.id("logout_link")).click();
+		driver.findElement(By.xpath(".//body/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/li[3]/a[1]")).click();
+		driver.findElement(By.xpath("//a[contains(@id,'logout')]")).click();
 
 	}
 
