@@ -19,7 +19,7 @@ public class ZeroBankTest {
 
 	 WebDriver driver;
 	 SoftAssert As = new SoftAssert();
-
+	 WebDriverWait ewait;
 	// Setting up the properties of the Chrome driver
 	@BeforeTest
 	public void setUp() {
@@ -50,11 +50,11 @@ public class ZeroBankTest {
 	@Test(priority = 1, enabled = true, groups= {"RegressionTest"} )
 	public void purchaseEmptyFieldValidation() {
 		driver.findElement(By.linkText("Pay Bills")).click();
-		WebDriverWait ewait = new WebDriverWait(driver, 10);
+			ewait = new WebDriverWait(driver, 10);
 		ewait.until(ExpectedConditions.titleContains("Pay Bills"));
 		driver.findElement(By.linkText("Purchase Foreign Currency")).click();
-		WebDriverWait ewait1 = new WebDriverWait(driver, 10);
-		ewait1.until(ExpectedConditions.titleContains("Purchase Foreign Currency"));
+		//WebDriverWait ewait1 = new WebDriverWait(driver, 10);
+		ewait.until(ExpectedConditions.titleContains("Purchase Foreign Currency"));
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		driver.findElement(By.cssSelector("input#purchase_cash[type='submit']")).click();
 		Alert jsAlert = driver.switchTo().alert();
@@ -75,52 +75,6 @@ public class ZeroBankTest {
 		As.assertEquals(actualTitle, expectedTitle);
 	}
 
-	@Test(priority = 3, enabled = true, groups= {"RegressionTest"} )
-	public void invalidUserNameTest() {
-
-		driver.findElement(By.id("signin_button")).click();
-		driver.findElement(By.id("user_login")).sendKeys("user@123");
-		driver.findElement(By.id("user_password")).sendKeys("password");
-		driver.findElement(By.name("submit")).click();
-		String actualText = driver.findElement(By.xpath("//div[contains(text(),'Login and/or password are wrong.')]"))
-				.getText();
-		String expectedText = "Login and/or password are wrong.";
-		As.assertEquals(actualText, expectedText);
-
-	}
-
-	@Test(priority = 4, enabled = true, groups= {"RegressionTest"} )
-	public void invalidPasswordTest() {
-
-		driver.findElement(By.id("signin_button")).click();
-		driver.findElement(By.id("user_login")).sendKeys("username");
-		driver.findElement(By.id("user_password")).sendKeys("pass#253");
-		driver.findElement(By.name("submit")).click();
-		String actualText = driver.findElement(By.xpath("//div[contains(text(),'Login and/or password are wrong.')]"))
-				.getText();
-		String expectedText = "Login and/or password are wrong.";
-		As.assertEquals(actualText, expectedText);
-	}
-
-	@Test(priority = 5, enabled = true, groups= {"RegressionTest"} )
-	public void forgotPasswordTest() {
-
-		driver.findElement(By.xpath("//a[contains(text(),'Forgot your password ?')]")).click();
-		driver.findElement(By.xpath("//input[@id='user_email']")).sendKeys("abc.co&");
-		driver.findElement(By.name("submit")).click();
-		String actualText = driver.findElement(By.className("offset3 span6")).getText();
-		String expectedText = "Your password will be sent to the following email: abc.co&";
-		As.assertEquals(actualText, expectedText);
-	}
-
-	@Test(priority = 6, enabled = true, groups= {"RegressionTest"} )
-	public void invalidSigninTest() {
-		driver.findElement(By.id("signin_button")).click();
-		driver.findElement(By.className("btn btn-primary")).click();
-		String actualMessage = driver.findElement(By.className("alert alert-error")).getText();
-		String expectedMessage = " Login and/or password are wrong.";
-		As.assertEquals(actualMessage, expectedMessage);
-	}
 
 	@AfterMethod
 	public void logOut() {
